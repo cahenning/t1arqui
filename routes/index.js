@@ -12,20 +12,21 @@ router.get('/', function(req, res, next) {
   });
   currentRequest.save(function (err) {
     if (err) return handleError(err);
+    else {
+      /* Show 10 last requests */
+      Request.
+      find({}).
+      sort('-timestamp').
+      limit(10).
+      select('ipAddress timestamp').
+      exec(function (err, requests) {
+        if (err) return handleError(err);
+        else {
+          res.render('index', { title: 'T1 - Cristobal Henning', 'requests': requests });
+        }
+      });
+    }
   });
-
-  /* Show last 10 requests */
-  Request.
-    find({}).
-    sort('-timestamp').
-    limit(10).
-    select('ipAddress timestamp').
-    exec(function (err, requests) {
-      if (err) return handleError(err);
-      else {
-        res.render('index', { title: 'T1', 'requests': requests });
-      }
-    });
 });
 
 module.exports = router;
